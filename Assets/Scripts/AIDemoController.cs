@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 
 [RequireComponent(typeof(AINavSteeringController))]
+//Added:
+[RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(NavMeshAgent))]
 public class AIDemoController : MonoBehaviour
 {
@@ -28,7 +30,8 @@ public class AIDemoController : MonoBehaviour
         C,
         D,
         E,
-        F
+        F,
+		G
 
     }
 
@@ -43,6 +46,8 @@ public class AIDemoController : MonoBehaviour
 
     AINavSteeringController aiSteer;
     NavMeshAgent agent;
+	//Added:
+	Animator anim;
 
 
     // Use this for initialization
@@ -52,6 +57,8 @@ public class AIDemoController : MonoBehaviour
         aiSteer = GetComponent<AINavSteeringController>();
 
         agent = GetComponent<NavMeshAgent>();
+		//Added
+		anim = GetComponent<Animator>();
 
         Debug.Log("NavMesh:avoidancePredictionTime(default): " + NavMesh.avoidancePredictionTime);
 
@@ -150,6 +157,14 @@ public class AIDemoController : MonoBehaviour
 
     }
 
+	//Add a Throwing State:
+	void transitionToStateG()
+	{
+		print ("Transition to staste G: Throwing");
+		state = State.G;
+		// Todo: Set state to throw!!!
+	}
+
     // Update is called once per frame
     void Update()
     {
@@ -187,6 +202,10 @@ public class AIDemoController : MonoBehaviour
                     transitionToStateA();
                 break;
 
+
+			//Todo: 
+			//Add a throwing state
+			//Add chasing state: make a gameobject a waypoint
             default:
 
                 print("Weird?");
