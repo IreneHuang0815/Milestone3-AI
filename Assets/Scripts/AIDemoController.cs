@@ -48,11 +48,15 @@ public class AIDemoController : MonoBehaviour
     NavMeshAgent agent;
 	//Added:
 	Animator anim;
+	GameObject target;
 
 
     // Use this for initialization
     void Start()
     {
+
+		GameObject[] possibleTargets = GameObject.FindGameObjectsWithTag ("target");
+		target = possibleTargets [Random.Range (0, possibleTargets.Length)];
 
         aiSteer = GetComponent<AINavSteeringController>();
 
@@ -73,6 +77,10 @@ public class AIDemoController : MonoBehaviour
 		
     }
 
+	void selectAtarget()
+	{
+		
+	}
 
     void transitionToStateA()
     {
@@ -162,7 +170,7 @@ public class AIDemoController : MonoBehaviour
 	{
 		print ("Transition to staste G: Throwing");
 		state = State.G;
-		// Todo: Set state to throw!!!
+		anim.SetTrigger("Throw");
 	}
 
     // Update is called once per frame
@@ -174,18 +182,22 @@ public class AIDemoController : MonoBehaviour
             case State.A:
                 
                 if (aiSteer.waypointsComplete())
-                    transitionToStateB();
+                    transitionToStateG();
                 break;
+			case State.G:
+				//If target hit
+				transitionToStateD();
+				break;
 
-            case State.B:
-                if (aiSteer.waypointsComplete())
-                    transitionToStateC();
-                break;
-
-            case State.C:
-                if (aiSteer.waypointsComplete())
-                    transitionToStateD();
-                break;
+//            case State.B:
+//                if (aiSteer.waypointsComplete())
+//                    transitionToStateC();
+//                break;
+//
+//            case State.C:
+//                if (aiSteer.waypointsComplete())
+//                    transitionToStateD();
+//                break;
 
             case State.D:
                 if (Time.timeSinceLevelLoad - beginWaitTime > waitTime)
@@ -201,8 +213,7 @@ public class AIDemoController : MonoBehaviour
                 if (aiSteer.waypointsComplete())
                     transitionToStateA();
                 break;
-
-
+			//Throw State
 			//Todo: 
 			//Add a throwing state
 			//Add chasing state: make a gameobject a waypoint
