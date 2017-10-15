@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/Finished/Scenes/CS4455_AI_Demo.unity
+  isLoaded: 1
+  isActive: 1

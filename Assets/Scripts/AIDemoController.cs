@@ -31,8 +31,8 @@ public class AIDemoController : MonoBehaviour
         D,
         E,
         F,
-		G
-
+		G,
+		H
     }
 
 
@@ -49,15 +49,15 @@ public class AIDemoController : MonoBehaviour
 	//Added:
 	Animator anim;
 	GameObject target;
+	GameObject[] possibleTargets;
+
 
 
     // Use this for initialization
     void Start()
     {
 
-		GameObject[] possibleTargets = GameObject.FindGameObjectsWithTag ("target");
-		target = possibleTargets [Random.Range (0, possibleTargets.Length)];
-
+		possibleTargets = GameObject.FindGameObjectsWithTag ("target");
         aiSteer = GetComponent<AINavSteeringController>();
 
         agent = GetComponent<NavMeshAgent>();
@@ -77,9 +77,33 @@ public class AIDemoController : MonoBehaviour
 		
     }
 
-	void selectAtarget()
+	GameObject randomlyChooseEnemy()
 	{
-		
+		GameObject randomEnemy = possibleTargets [Random.Range (0, possibleTargets.Length)];
+		return randomEnemy;
+	}
+
+	GameObject findClosestEnemy ()
+	{
+		GameObject closest = randomlyChooseEnemy();
+		float distance = Mathf.Infinity;
+		Vector3 position = transform.position;
+		foreach(GameObject go in possibleTargets)
+		{
+			Vector3 diff = go.transform.position - position;
+			float curDistance = diff.sqrMagnitude;
+			if (curDistance < distance) {
+				closest = go;
+				distance = curDistance;
+			}
+		}
+		return closest;
+	}
+
+	void OnCollisionEnter(Collision theCollision){
+		if (theCollision.gameObject.tag == "target"){
+		Debug.Log ("Hit something!");
+		}
 	}
 
     void transitionToStateA()
@@ -173,6 +197,16 @@ public class AIDemoController : MonoBehaviour
 		anim.SetTrigger("Throw");
 	}
 
+	//Add a chasing State
+	void transitionToStateH()
+	{
+		print ("Transition to State H : chasing enemy");
+		state = State.H;
+		target = findClosestEnemy();
+		aiSteer.setWaypoint (target.transform);
+		aiSteer.useNavMeshPathPlanning = true;
+	}
+
     // Update is called once per frame
     void Update()
     {
@@ -186,9 +220,12 @@ public class AIDemoController : MonoBehaviour
                 break;
 			case State.G:
 				//If target hit
-				transitionToStateD();
+				transitionToStateH();
 				break;
-
+			case State.H:
+				//
+				transitionToStateD ();
+				break;
 //            case State.B:
 //                if (aiSteer.waypointsComplete())
 //                    transitionToStateC();
@@ -223,6 +260,6 @@ public class AIDemoController : MonoBehaviour
                 break;
         }
 
-
+		 
     }
 }
