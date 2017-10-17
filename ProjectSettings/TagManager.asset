@@ -8,6 +8,7 @@ TagManager:
   - grabbable
   - ground
   - target
+  - player
   layers:
   - Default
   - TransparentFX
