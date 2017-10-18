@@ -9,6 +9,7 @@ TagManager:
   - ground
   - target
   - player
+  - ball
   layers:
   - Default
   - TransparentFX

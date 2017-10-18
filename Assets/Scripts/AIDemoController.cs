@@ -48,11 +48,16 @@ public class AIDemoController : MonoBehaviour
 	GameObject target;
 	GameObject[] possibleTargets;
 
+	GameObject theBall;
+	float throwingForce = 50f;
+
+	bool throwing = false;
 
 
-    // Use this for initialization
+    // Use this for initializations
     void Start()
     {
+		theBall = GameObject.FindGameObjectWithTag ("ball");
 		player = GameObject.FindGameObjectWithTag ("player");
 		possibleTargets = GameObject.FindGameObjectsWithTag ("target");
         aiSteer = GetComponent<AINavSteeringController>();
@@ -166,6 +171,13 @@ public class AIDemoController : MonoBehaviour
 	void transitionToStateG(GameObject target)
 	{
 		print ("Transition to staste G: Throwing");
+		throwing = true;
+		Vector3 shootPos = theBall.transform.position;
+		Vector3 targetPos = target.transform.position;
+		Vector3 shooterVel = Vector3.zero;
+		Vector3 targetVel = target.GetComponent<Rigidbody>() ? target.GetComponent<Rigidbody>().velocity : Vector3.zero;
+		throwingDirection = firstOrderIntercept (shootPos, shooterVel, throwingForce, targetPos, targetVel);
+		throwAball(throwingDirection.normalized);
 		state = State.G;
 		anim.SetTrigger("Throw");
 	}
@@ -228,6 +240,8 @@ public class AIDemoController : MonoBehaviour
             case State.A:
                 if (aiSteer.waypointsComplete())
                     transitionToStateD();
+//					target = findClosestEnemy();
+//					transitionToStateG(target);
                 break;
             case State.D:
                 if (Time.timeSinceLevelLoad - beginWaitTime > waitTime)
@@ -241,19 +255,22 @@ public class AIDemoController : MonoBehaviour
 					transitionToStateF (target);
 				}
                 break;
-			case State.F:
-				Debug.Log ("targethIt:   " + targetHit);
-				if (targetHit) {
-	//							player.GetComponent<Rigidbody> ().velocity = player.GetComponent<Rigidbody> ().velocity * 0.5f;
-					target = findClosestEnemy ();
-					transitionToStateG (target);
-					targetHit = false;	
-				} else {
-				transitionToStateF (target);
-				}
+		case State.F:
+			if (aiSteer.waypointsComplete())
+				target = findClosestEnemy();
+				transitionToStateG(target);
+//				if (targetHit) {
+//	//							player.GetComponent<Rigidbody> ().velocity = player.GetComponent<Rigidbody> ().velocity * 0.5f;
+//					
+//					transitionToStateG (target);
+//					targetHit = false;	
+//				} else {
+//				transitionToStateF (target);
+//				}
 				break;
 			case State.G:
 				//If target hit
+				
 				transitionToStateA();
 				break;
             default:
@@ -262,4 +279,21 @@ public class AIDemoController : MonoBehaviour
                 break;
         }
     }
+		
+
+	void throwAball(Vector3 direction)
+	{
+		theBall.transform.SetParent(null);
+		theBall.GetComponent<Rigidbody> ().isKinematic = false;
+		theBall.GetComponent<Rigidbody> ().useGravity = true;
+		theBall.GetComponent<Collider> ().enabled = true;
+		theBall.GetComponent<Rigidbody>().AddForce(direction * throwingForce, ForceMode.Impulse);
+//		theBall.GetComponent<Rigidbody>().useGravity = true;
+//		theBall.GetComponent<Rigidbody>().AddForce(direction * throwingForce, ForceMode.Impulse);
+		throwing = true;
+	}
+
+	void endThrowing(){
+		throwing = false;
+	}
 }
