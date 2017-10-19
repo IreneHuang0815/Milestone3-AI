@@ -115,8 +115,6 @@ a1ce0c3141be3ae70808d64035a67a88 Assembly-CSharp.dll:.ThirdPersonCamera
 0abe58b80c6051fb6b95c360ea81e16f Assembly-CSharp.dll:.SecurityCamera
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.AnimTriggers
 1d16f1b7cee981b2009e746e6f7cc91d Assembly-CSharp.dll:.BotControlScript
-05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
-05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
 35647551d6e7a13775698651adc8f726 Assembly-CSharp.dll:.EventEmitterDemo
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -149,3 +147,5 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 2252792752d3c93d4c992d25d3f5d7d3 Assembly-CSharp.dll:.EventListenerDemo
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Samoflange
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.textManager
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.script

@@ -213,9 +213,10 @@ ModelImporter:
       curves: []
       events:
       - time: 0.37813503
-        functionName: NewEvent
+        functionName: throwTheBall
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 1334592371002788, guid: 18325c9e28dd8d04ea71ecb6e3691c41,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
